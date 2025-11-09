@@ -272,6 +272,201 @@ npm run mcp:test -- --call auto_configure_server --args '{"host":"<ip>","usernam
 
 ---
 
+## AI IDE Integration / AI IDE集成
+
+- English:
+  - Integrate the ServerReady MCP server with popular AI IDEs to discover and use tools directly in chat and command panels.
+  - Below are bilingual configuration examples and steps for Cursor, Trae, Claude Code, and Codex.
+- 中文：
+  - 将 ServerReady MCP 服务器集成到主流 AI IDE，在聊天/命令面板中直接发现并使用工具。
+  - 下方提供 Cursor、Trae、Claude Code、Codex 的中英双语配置示例与步骤。
+
+Prerequisites / 前提条件：
+- English:
+  - Ensure `Node.js >= 18`: `node --version`
+  - Install dependencies in your workspace: `npm install`
+- 中文：
+  - 确保 `Node.js >= 18`：`node --version`
+  - 在项目根目录安装依赖：`npm install`
+
+---
+
+### Cursor
+
+- English:
+  - Add an MCP server in Cursor settings or workspace configuration.
+  - Example configuration:
+- 中文：
+  - 在 Cursor 设置或工作区配置中添加 MCP 服务器。
+  - 示例配置：
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "serverready": {
+        "command": "node",
+        "args": ["src/mcp-server.js"],
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "NODE_ENV": "development"
+        }
+      }
+    }
+  }
+}
+```
+
+Steps / 步骤：
+- English:
+  - Open Cursor settings → MCP, add server `serverready`.
+  - Set command to `node`, args to `src/mcp-server.js`, working directory to your workspace root.
+- 中文：
+  - 打开 Cursor 设置 → MCP，添加服务器 `serverready`。
+  - 命令设为 `node`，参数为 `src/mcp-server.js`，工作目录为项目根目录。
+
+Usage examples / 使用示例：
+- English:
+  - "Analyze current repository dependencies and recommended server setup" → calls `analyze_dependencies`.
+  - "Is port 3000 open on this machine?" → calls `check_port`.
+  - "Initialize the server environment for this project" → calls `auto_configure_server`.
+- 中文：
+  - “分析当前仓库依赖并给出服务器推荐” → 调用 `analyze_dependencies`。
+  - “这台机器是否开放 3000 端口？” → 调用 `check_port`。
+  - “为本项目完成基础环境初始化” → 调用 `auto_configure_server`。
+
+---
+
+### Trae
+
+- English:
+  - Add an MCP tool in Trae tool configuration.
+  - Example configuration:
+- 中文：
+  - 在 Trae 工具配置中添加 MCP 工具。
+  - 示例配置：
+
+```json
+{
+  "tools": {
+    "serverready-mcp": {
+      "type": "mcp",
+      "config": {
+        "command": "node",
+        "args": ["${workspaceFolder}/src/mcp-server.js"],
+        "workingDirectory": "${workspaceFolder}"
+      }
+    }
+  }
+}
+```
+
+Steps / 步骤：
+- English:
+  - Open Trae tools configuration, add `serverready-mcp`.
+  - Set command to `node`, args to `${workspaceFolder}/src/mcp-server.js`.
+- 中文：
+  - 打开 Trae 工具配置，添加 `serverready-mcp`。
+  - 命令设为 `node`，参数为 `${workspaceFolder}/src/mcp-server.js`。
+
+Usage examples / 使用示例：
+- English:
+  - Use MCP tools from the command palette or chat: `inspect_server`, `quick_check`, `initialize_server`, `check_port`, `get_system_info`, `batch_inspect`, `analyze_dependencies`, `auto_configure_server`.
+- 中文：
+  - 在命令面板或聊天中调用 MCP 工具：`inspect_server`、`quick_check`、`initialize_server`、`check_port`、`get_system_info`、`batch_inspect`、`analyze_dependencies`、`auto_configure_server`。
+
+---
+
+### Claude Code
+
+- English:
+  - Create `.claude/mcp.yml` in your workspace with:
+- 中文：
+  - 在项目根目录创建 `.claude/mcp.yml`，内容如下：
+
+```yaml
+# .claude/mcp.yml
+servers:
+  serverready:
+    command: node
+    args:
+      - src/mcp-server.js
+    working_directory: .
+    environment:
+      NODE_ENV: development
+```
+
+Steps / 步骤：
+- English:
+  - Restart Claude Code if necessary; tools appear in the MCP panel.
+- 中文：
+  - 必要时重启 Claude Code；工具会在 MCP 面板中显示。
+
+Usage examples / 使用示例：
+- English: Call `analyze_dependencies`, `inspect_server`, `check_port`, `auto_configure_server` from the tools panel or chat.
+- 中文：在工具面板或聊天中调用 `analyze_dependencies`、`inspect_server`、`check_port`、`auto_configure_server`。
+
+---
+
+### Codex
+
+- English:
+  - Create `.codex/mcp.json` in your workspace with:
+- 中文：
+  - 在项目根目录创建 `.codex/mcp.json`，内容如下：
+
+```json
+{
+  "servers": {
+    "serverready": {
+      "command": "node",
+      "args": ["src/mcp-server.js"],
+      "cwd": ".",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "transport": "stdio",
+      "capabilities": {
+        "tools": true,
+        "resources": true
+      }
+    }
+  }
+}
+```
+
+Features / 特点：
+- English:
+  - Native MCP tools panel, per-workspace server context and logs, auto-reconnect and retry, fine-grained permission prompts.
+- 中文：
+  - 原生 MCP 工具面板、工作区级服务器上下文与日志、自动重连与重试、细粒度权限提示。
+
+Steps / 步骤（UI）：
+- English:
+  - Open Codex settings → `Tools/MCP`.
+  - Add server `serverready`, command `node`, args `src/mcp-server.js`, working directory `.`.
+  - Optionally set `NODE_ENV=development`, choose transport `stdio`.
+  - Save, then mention `@serverready` in chat or open the tools panel to test.
+- 中文：
+  - 打开 Codex 设置 → `Tools/MCP`。
+  - 添加服务器 `serverready`，命令 `node`，参数 `src/mcp-server.js`，工作目录 `.`。
+  - 可选设置 `NODE_ENV=development`，传输方式选择 `stdio`。
+  - 保存后在聊天中输入 `@serverready` 或打开工具面板测试连接。
+
+Usage examples / 使用示例：
+- English:
+  - "Analyze current repository and recommend server environment" → `analyze_dependencies`.
+  - Command palette: `ServerReady › inspect_server` and fill target host info.
+  - "Is port 3000 open now?" → `check_port`.
+  - "Initialize base environment for this project on target server" → `auto_configure_server`.
+- 中文：
+  - “分析当前仓库并推荐服务器环境” → `analyze_dependencies`。
+  - 命令面板：选择 `ServerReady › inspect_server` 并填写目标主机信息。
+  - “现在这台机器是否开放 3000 端口？” → `check_port`。
+  - “根据本项目在目标服务器完成基础环境搭建” → `auto_configure_server`。
+
+---
+
 ## Dependency Analysis & Auto Config / 依赖分析与自动配置
 
 - English:
