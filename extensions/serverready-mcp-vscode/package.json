@@ -1,0 +1,75 @@
+{
+  "name": "serverready-mcp-vscode",
+  "displayName": "ServerReady MCP",
+  "publisher": "JinxCN",
+  "version": "0.1.0",
+  "description": "Run and manage the ServerReady MCP server inside VS Code / 在 VS Code 中运行与管理 ServerReady MCP 服务器",
+  "license": "ISC",
+  "engines": {
+    "vscode": "^1.87.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "mcp",
+    "serverready",
+    "ai",
+    "tools",
+    "devops",
+    "infrastructure"
+  ],
+  "main": "./src/extension.js",
+  "activationEvents": [
+    "onCommand:serverreadyMcp.start",
+    "onCommand:serverreadyMcp.stop"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "serverreadyMcp.start",
+        "title": "ServerReady MCP: Start / 启动"
+      },
+      {
+        "command": "serverreadyMcp.stop",
+        "title": "ServerReady MCP: Stop / 停止"
+      }
+    ],
+    "configuration": {
+      "title": "ServerReady MCP",
+      "properties": {
+        "serverreadyMcp.command": {
+          "type": "string",
+          "default": "node",
+          "description": "Executable to launch MCP server (e.g., node) / 启动 MCP 服务器的可执行程序（如 node）"
+        },
+        "serverreadyMcp.args": {
+          "type": "array",
+          "default": [
+            "${workspaceFolder}/src/mcp-server.js"
+          ],
+          "description": "Arguments for the MCP server process / MCP 服务器进程参数"
+        },
+        "serverreadyMcp.workingDirectory": {
+          "type": "string",
+          "default": "${workspaceFolder}",
+          "description": "Working directory for the MCP server / MCP 服务器工作目录"
+        },
+        "serverreadyMcp.environment": {
+          "type": "object",
+          "default": {
+            "NODE_ENV": "development"
+          },
+          "description": "Environment variables for MCP server / MCP 服务器环境变量"
+        }
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JinxCN/ServerReady"
+  },
+  "bugs": {
+    "url": "https://github.com/JinxCN/ServerReady/issues"
+  }
+}

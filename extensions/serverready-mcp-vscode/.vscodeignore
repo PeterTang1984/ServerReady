@@ -1,0 +1,9 @@
+node_modules
+**/*.map
+**/*.ts
+logs/**
+test/**
+.trae/**
+.git/**
+**/*.log
+**/*.tmp
